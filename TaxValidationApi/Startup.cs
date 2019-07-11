@@ -34,7 +34,6 @@ namespace TaxValidationApi
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddRouting(options => { options.LowercaseUrls = true; });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info {Title = "Tax Validation API", Version = "v1"});
