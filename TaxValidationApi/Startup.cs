@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
-using TaxValidationApi.Services;
+using TaxValidationApi.Extensions;
+using TaxValidationApi.Infrastructure.Middleware;
+using TaxValidationApi.Services.TaxService;
 
 namespace TaxValidationApi
 {
@@ -24,19 +27,26 @@ namespace TaxValidationApi
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder.WithOrigins(Configuration["TaxValidationUI:Url"])
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddRouting(options => { options.LowercaseUrls = true; });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Tax Validation API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info {Title = "Tax Validation API", Version = "v1"});
             });
 
-            services.AddScoped<ITaxService, TaxService>();
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
+                loggingBuilder.AddConsole();
+                loggingBuilder.AddDebug();
+            });
+            services.ConfigureServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,8 +61,6 @@ namespace TaxValidationApi
                 app.UseHsts();
             }
 
-            app.UseCors("CorsPolicy");
-
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -63,7 +71,8 @@ namespace TaxValidationApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tax Validation API V1");
                 c.RoutePrefix = string.Empty;
             });
-
+            app.UseCors("CorsPolicy");
+            app.UseMiddleware<RequestLogger>();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

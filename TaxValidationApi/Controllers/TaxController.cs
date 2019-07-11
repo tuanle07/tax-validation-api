@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaxValidationApi.Services;
+using TaxValidationApi.Services.TaxService;
 
 namespace TaxValidationApi.Controllers
 {
@@ -15,7 +15,7 @@ namespace TaxValidationApi.Controllers
         }
 
         // GET api/tax/validity/5
-        [HttpGet("Validity/{tfn}")]
+        [HttpGet("validity/{tfn}")]
         public ActionResult<bool> GetTfnValidity(int tfn)
         {
             return _taxService.GetTfnValidity(tfn);
