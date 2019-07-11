@@ -37,21 +37,21 @@ namespace TaxValidationApi.Services.TaxService
 
         private static IWeightingFactor GetWeightingFactorProvider(int totalDigits)
         {
-            IWeightingFactor weightingFactor;
+            IWeightingFactor weightingFactorProvider;
             switch (totalDigits)
             {
                 case 8:
-                    weightingFactor = new WeightingFactors8();
+                    weightingFactorProvider = new WeightingFactors8();
                     break;
                 case 9:
-                    weightingFactor = new WeightingFactors9();
+                    weightingFactorProvider = new WeightingFactors9();
                     break;
                 default:
                     throw new HttpStatusCodeException(StatusCodes.Status500InternalServerError,
                         "No weighting factor provider found");
             }
 
-            return weightingFactor;
+            return weightingFactorProvider;
         }
     }
 }
