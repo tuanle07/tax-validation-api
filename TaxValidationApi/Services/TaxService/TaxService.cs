@@ -9,7 +9,7 @@ namespace TaxValidationApi.Services.TaxService
     {
         public bool GetTfnValidity(long tfn)
         {
-            if (tfn < 0)
+            if (tfn <= 0)
             {
                 throw new HttpStatusCodeException(StatusCodes.Status400BadRequest, "TFN cannot be a negative");
             }
