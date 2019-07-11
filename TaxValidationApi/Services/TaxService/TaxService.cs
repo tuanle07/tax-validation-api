@@ -25,11 +25,11 @@ namespace TaxValidationApi.Services.TaxService
                     "TFN cannot contain more than 9 digits");
             }
 
-            var weightingFactor = GetWeightingFactorProvider(digits.Length);
+            var weightingFactorProvider = GetWeightingFactorProvider(digits.Length);
             var digitsWithWeightingFactor = digits.Select((t, i) => new
             {
                 digit = t,
-                weighting = weightingFactor.GetWeightingFactor(i)
+                weighting = weightingFactorProvider.GetWeightingFactor(i)
             });
             var sum = digitsWithWeightingFactor.Aggregate(0, (acc, x) => acc + x.digit * x.weighting);
             return sum % 11 == 0 ? true : false;
