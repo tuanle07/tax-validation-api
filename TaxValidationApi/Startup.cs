@@ -26,10 +26,13 @@ namespace TaxValidationApi
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins(Configuration["TaxValidationUI:Url"])
+                    builder => builder
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithOrigins("http://localhost:3000")
                         .AllowAnyMethod()
+                        .AllowCredentials()
                         .AllowAnyHeader()
-                        .AllowCredentials());
+                        .Build());
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

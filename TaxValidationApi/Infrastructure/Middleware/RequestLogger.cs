@@ -47,7 +47,6 @@ namespace TaxValidationApi.Infrastructure.Middleware
                     "The response has already started, the http status code middleware will not be executed.");
             }
 
-            httpContext.Response.Clear();
             httpContext.Response.StatusCode = statusCode;
             httpContext.Response.ContentType = contentType;
 
