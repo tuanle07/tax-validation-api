@@ -7,7 +7,7 @@ namespace TaxValidationApi.Services.TaxService
 {
     public class TaxService : ITaxService
     {
-        public bool GetTfnValidity(int tfn)
+        public bool GetTfnValidity(long tfn)
         {
             if (tfn < 0)
             {
@@ -19,10 +19,10 @@ namespace TaxValidationApi.Services.TaxService
                 .Select(t => int.Parse(t.ToString()))
                 .ToArray();
 
-            if (digits.Length > 9)
+            if (digits.Length != 8 && digits.Length != 9)
             {
                 throw new HttpStatusCodeException(StatusCodes.Status400BadRequest,
-                    "TFN cannot contain more than 9 digits");
+                    "TFN must be 8 or 9 digits long");
             }
 
             var weightingFactorProvider = GetWeightingFactorProvider(digits.Length);

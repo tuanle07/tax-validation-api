@@ -7,6 +7,6 @@ namespace TaxValidationApi.Services.TaxService
 {
     public interface ITaxService
     {
-        bool GetTfnValidity(int tfn);
+        bool GetTfnValidity(long tfn);
     }
 }

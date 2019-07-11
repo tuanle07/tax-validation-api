@@ -16,7 +16,7 @@ namespace TaxValidationApi.Controllers
 
         // GET api/tax/validity/5
         [HttpGet("validity/{tfn}")]
-        public ActionResult<bool> GetTfnValidity(int tfn)
+        public ActionResult<bool> GetTfnValidity(long tfn)
         {
             return _taxService.GetTfnValidity(tfn);
         }
