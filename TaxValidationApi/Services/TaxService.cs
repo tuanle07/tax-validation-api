@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using TaxValidationApi.Models;
 
 namespace TaxValidationApi.Services
 {
@@ -14,7 +16,7 @@ namespace TaxValidationApi.Services
         {
             if (tfn < 0)
             {
-                throw new Exception("TFN cannot be a negative");
+                throw new HttpStatusCodeException(StatusCodes.Status400BadRequest, "TFN cannot be a negative");
             };
 
             //converting tfn to array of digits
@@ -24,7 +26,7 @@ namespace TaxValidationApi.Services
 
             if (digits.Length > 9)
             {
-                throw new Exception("TFN cannot contain more than 9 digits");
+                throw new HttpStatusCodeException(StatusCodes.Status400BadRequest, "TFN cannot contain more than 9 digits");
             };
 
             var digitsWithWeightingFactor = digits.Select((t, i) => new
@@ -36,7 +38,7 @@ namespace TaxValidationApi.Services
             return sum % 11 == 0 ? true : false;
         }
 
-        private int GetWeightingFactor(int index, int totalDigits)
+        private static int GetWeightingFactor(int index, int totalDigits)
         {
             switch (index)
             {
