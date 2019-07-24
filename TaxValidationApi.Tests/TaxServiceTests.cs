@@ -2,6 +2,7 @@ using FluentAssertions;
 using System;
 using TaxValidationApi.Models;
 using TaxValidationApi.Services.TaxService;
+using TaxValidationApi.Services.TaxService.WeightingFactors;
 using Xunit;
 
 namespace TaxValidationApi.Tests
@@ -12,7 +13,7 @@ namespace TaxValidationApi.Tests
 
         public TaxServiceTests()
         {
-            _taxService = new TaxService();
+            _taxService = new TaxService(new WeightingFactorProviderFactory());
         }
 
         [Theory()]
